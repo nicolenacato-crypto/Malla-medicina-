@@ -33,8 +33,19 @@
   Progreso total: <span id="progresoTotal">0%</span>
 </div>
 
-<!-- Contenedor único donde se generarán los semestres y materias -->
+<!-- Contenedor donde se generarán semestres y materias -->
 <div id="contenedor" class="malla"></div>
+
+<!-- Botón para añadir nueva materia -->
+<div class="agregar-materia">
+  <h3>Agregar materia</h3>
+  <input type="text" id="nombreMateria" placeholder="Nombre">
+  <input type="text" id="codigoMateria" placeholder="Código">
+  <input type="number" id="creditosMateria" placeholder="Créditos">
+  <input type="number" id="semestreMateria" placeholder="Semestre">
+  <input type="text" id="requisitosMateria" placeholder="Requisitos (códigos separados por coma)">
+  <button onclick="agregarMateria()">Agregar</button>
+</div>
 
 <script src="script.js"></script>
 </body>
