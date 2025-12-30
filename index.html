@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Malla Interactiva Medicina – UDLA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+<h1>Malla Interactiva Medicina – UDLA</h1>
+<p class="sub">12 semestres | Progreso y notas automáticas</p>
+
+<div class="progreso-general">
+  Progreso total: <span id="progresoTotal">0%</span>
+</div>
+
+<div class="add-section">
+  <h3>Añadir Semestre</h3>
+  <input type="number" id="nuevoSemestre" min="1" placeholder="Número de semestre">
+  <button onclick="crearSemestre()">Añadir Semestre</button>
+</div>
+
+<div class="add-section">
+  <h3>Añadir Materia</h3>
+  <select id="semestreMateria"></select>
+  <input type="text" id="nombreMateria" placeholder="Nombre de materia">
+  <input type="text" id="codigoMateria" placeholder="Código">
+  <input type="number" id="creditosMateria" placeholder="Créditos" min="1">
+  <input type="text" id="requisitosMateria" placeholder="Prerrequisitos (códigos, separados por coma)">
+  <button onclick="agregarMateriaUsuario()">Añadir Materia</button>
+</div>
+
+<div class="malla" id="contenedor"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
