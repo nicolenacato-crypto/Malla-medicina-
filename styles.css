@@ -1,14 +1,13 @@
-/* ===== Estilos generales ===== */
 body {
-  font-family: system-ui, sans-serif;
+  font-family: Arial, sans-serif;
   background: #f8fafc;
   margin: 0;
   padding: 15px;
 }
 
-h1, h2 {
+h1 {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .sub {
@@ -26,27 +25,6 @@ h1, h2 {
   font-weight: bold;
 }
 
-/* ===== Navegación semestres ===== */
-.nav-semestres {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.nav-semestres button {
-  margin: 2px;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 6px;
-  border: 1px solid #cbd5f5;
-  background: #fff;
-  transition: all 0.2s ease;
-}
-
-.nav-semestres button:hover {
-  background: #e0f2fe;
-}
-
-/* ===== Malla y semestres ===== */
 .malla {
   display: flex;
   gap: 16px;
@@ -59,31 +37,17 @@ h1, h2 {
 }
 
 .semestre {
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 18px;
+  padding: 14px;
   min-width: 280px;
-  flex-shrink: 0;
 }
 
 .semestre h2 {
+  text-align: center;
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
-/* Colores por semestre */
-.semestre[data-semestre="1"]  { background: #e0f2fe; }
-.semestre[data-semestre="2"]  { background: #ecfdf5; }
-.semestre[data-semestre="3"]  { background: #f3e8ff; }
-.semestre[data-semestre="4"]  { background: #fef9c3; }
-.semestre[data-semestre="5"]  { background: #e0f7fa; }
-.semestre[data-semestre="6"]  { background: #fff1f2; }
-.semestre[data-semestre="7"]  { background: #f0fdf4; }
-.semestre[data-semestre="8"]  { background: #fdf2f8; }
-.semestre[data-semestre="9"]  { background: #ecfeff; }
-.semestre[data-semestre="10"] { background: #f1f5f9; }
-.semestre[data-semestre="11"] { background: #fafaf9; }
-.semestre[data-semestre="12"] { background: #f5f3ff; }
-
-/* ===== Materias ===== */
 .materia-columna {
   background: #ffffff;
   border-radius: 12px;
@@ -111,7 +75,6 @@ h1, h2 {
   filter: grayscale(100%);
 }
 
-/* ===== Inputs de notas ===== */
 .progresos {
   display: flex;
   gap: 8px;
@@ -126,37 +89,9 @@ h1, h2 {
   border: 1px solid #cbd5f5;
 }
 
-/* ===== Botón aprobar ===== */
-.boton {
-  margin-top: 8px;
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 6px;
-  background: #3b82f6;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.boton:hover {
-  background: #2563eb;
-}
-
-/* ===== Responsivo ===== */
 @media (max-width: 768px) {
   .malla {
     flex-direction: column;
     overflow-x: hidden;
   }
-  .semestre {
-    width: 100%;
-  }
 }
-
-@media (min-width: 1024px) {
-  .semestre {
-    min-width: 300px;
-  }
-                              }
