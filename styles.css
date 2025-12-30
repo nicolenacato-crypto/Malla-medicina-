@@ -68,3 +68,13 @@ h1 {
   width: 100%;
   padding: 8px;
 }
+.materia.bloqueada {
+  opacity: 0.35;
+  pointer-events: none;
+  transform: scale(0.97);
+  filter: grayscale(100%);
+}
+
+.materia {
+  transition: all 0.3s ease;
+}
