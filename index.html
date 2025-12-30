@@ -1,164 +1,188 @@
-<div class="nav-semestres">
-  <button onclick="mostrarTodo()">Todos</button>
-  <button onclick="mostrarSolo(1)">1</button>
-  <button onclick="mostrarSolo(2)">2</button>
-</div>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Malla Medicina UDLA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2 { text-align: center; }
+    .nav-semestres { text-align: center; margin-bottom: 15px; }
+    .nav-semestres button { margin: 2px; padding: 5px 10px; cursor: pointer; }
+    .progreso-general { text-align: center; margin-bottom: 20px; font-weight: bold; }
+    .semestre { padding: 10px; margin-bottom: 10px; border-radius: 8px; }
+    .materia-columna { border: 1px solid #aaa; padding: 8px; margin: 5px 0; border-radius: 5px; }
+    .materia-columna.bloqueada { opacity: 0.6; pointer-events: none; }
+    .progresos input { width: 40px; margin-right: 5px; }
+    /* Colores por semestre */
+    .semestre[data-semestre="1"] { background-color: #f9c2c2; }
+    .semestre[data-semestre="2"] { background-color: #c2f9d6; }
+    .semestre[data-semestre="3"] { background-color: #c2d4f9; }
+    .semestre[data-semestre="4"] { background-color: #f9e1c2; }
+    .semestre[data-semestre="5"] { background-color: #f9c2f2; }
+    .semestre[data-semestre="6"] { background-color: #c2f9f0; }
+    .semestre[data-semestre="7"] { background-color: #f0f9c2; }
+    .semestre[data-semestre="8"] { background-color: #f2c2c2; }
+    .semestre[data-semestre="9"] { background-color: #c2f2f9; }
+    .semestre[data-semestre="10"] { background-color: #e0c2f9; }
+    .semestre[data-semestre="11"] { background-color: #f9f2c2; }
+    .semestre[data-semestre="12"] { background-color: #c2f9c8; }
+    @media (max-width: 768px) {
+      .materia-columna { font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
 
 <h1>Malla Curricular Medicina – UDLA</h1>
 <p class="sub">12 semestres | Progreso y notas automáticas</p>
 
+<div class="nav-semestres">
+  <button onclick="mostrarTodo()">Todos</button>
+  <button onclick="mostrarSolo(1)">1</button>
+  <button onclick="mostrarSolo(2)">2</button>
+  <button onclick="mostrarSolo(3)">3</button>
+  <button onclick="mostrarSolo(4)">4</button>
+  <button onclick="mostrarSolo(5)">5</button>
+  <button onclick="mostrarSolo(6)">6</button>
+  <button onclick="mostrarSolo(7)">7</button>
+  <button onclick="mostrarSolo(8)">8</button>
+  <button onclick="mostrarSolo(9)">9</button>
+  <button onclick="mostrarSolo(10)">10</button>
+  <button onclick="mostrarSolo(11)">11</button>
+  <button onclick="mostrarSolo(12)">12</button>
+</div>
+
 <div class="progreso-general">
   Progreso total: <span id="progresoTotal">0%</span>
 </div>
-<div class="materia bloqueada">
-  <h3>Química General para Medicina</h3>
 
-  <div class="progresos">
-    <input type="number" class="p1" placeholder="P1">
-    <input type="number" class="p2" placeholder="P2">
-    <input type="number" class="p3" placeholder="P3">
-  </div>
-
-  <p class="nota-final">Nota final: <span>0.00</span></p>
-</div>
 <div id="contenedor"></div>
 
-<script src="script.js"></script>
+<script>
+  // === Datos de ejemplo, reemplaza con tus materias reales ===
+  const data = [
+    { semestre: 1, materias: [
+      { nombre:"Química General", codigo:"MED101", creditos:5, prereq:[] },
+      { nombre:"Anatomía I", codigo:"MED102", creditos:6, prereq:[] }
+    ]},
+    { semestre: 2, materias: [
+      { nombre:"Bioquímica", codigo:"MED201", creditos:5, prereq:["MED101"] },
+      { nombre:"Anatomía II", codigo:"MED202", creditos:6, prereq:["MED102"] }
+    ]},
+    { semestre: 3, materias: [
+      { nombre:"Fisiología I", codigo:"MED301", creditos:5, prereq:["MED201"] },
+      { nombre:"Microbiología I", codigo:"MED302", creditos:4, prereq:["MED201"] }
+    ]}
+    // Agrega todos los semestres hasta el 12...
+  ];
+
+  const contenedor = document.getElementById("contenedor");
+
+  function crearMalla() {
+    data.forEach(s => {
+      const divSem = document.createElement("div");
+      divSem.className = "semestre";
+      divSem.dataset.semestre = s.semestre;
+      divSem.innerHTML = `<h2>Semestre ${s.semestre}</h2>`;
+      
+      s.materias.forEach(m => {
+        const divMat = document.createElement("div");
+        divMat.className = "materia-columna bloqueada";
+        divMat.dataset.id = m.codigo;
+        divMat.dataset.requisitos = m.prereq.join(",");
+        divMat.innerHTML = `
+          <h3>${m.nombre}</h3>
+          <p>${m.codigo} | ${m.creditos} créditos</p>
+          <div class="progresos">
+            <input class="p1" type="number" min="0" max="10" placeholder="P1">
+            <input class="p2" type="number" min="0" max="10" placeholder="P2">
+            <input class="p3" type="number" min="0" max="10" placeholder="P3">
+          </div>
+          <p class="nota-final">Nota final: <span>0.00</span></p>
+        `;
+        divSem.appendChild(divMat);
+      });
+
+      contenedor.appendChild(divSem);
+    });
+  }
+
+  function calcularNota(materia) {
+    const p1 = parseFloat(materia.querySelector(".p1").value)||0;
+    const p2 = parseFloat(materia.querySelector(".p2").value)||0;
+    const p3 = parseFloat(materia.querySelector(".p3").value)||0;
+    const nota = p1*0.25 + p2*0.35 + p3*0.4;
+    materia.querySelector(".nota-final span").textContent = nota.toFixed(2);
+    materia.classList.toggle("aprobada", nota >= 7);
+    actualizarBloqueos();
+    guardarDatos();
+    actualizarProgreso();
+  }
+
+  function actualizarBloqueos() {
+    document.querySelectorAll(".materia-columna").forEach(m => {
+      const reqs = m.dataset.requisitos.split(",").filter(r=>r);
+      const desbloqueada = reqs.every(id => {
+        const mat = document.querySelector(`[data-id="${id}"]`);
+        return mat && mat.classList.contains("aprobada");
+      });
+      if(reqs.length>0) m.classList.toggle("bloqueada", !desbloqueada);
+      else m.classList.remove("bloqueada");
+    });
+  }
+
+  function guardarDatos() {
+    const datos = {};
+    document.querySelectorAll(".materia-columna").forEach(m=>{
+      datos[m.dataset.id] = {
+        p1: m.querySelector(".p1").value,
+        p2: m.querySelector(".p2").value,
+        p3: m.querySelector(".p3").value
+      };
+    });
+    localStorage.setItem("mallaNotas", JSON.stringify(datos));
+  }
+
+  function cargarDatos() {
+    const datos = JSON.parse(localStorage.getItem("mallaNotas"))||{};
+    document.querySelectorAll(".materia-columna").forEach(m=>{
+      if(datos[m.dataset.id]){
+        m.querySelector(".p1").value = datos[m.dataset.id].p1;
+        m.querySelector(".p2").value = datos[m.dataset.id].p2;
+        m.querySelector(".p3").value = datos[m.dataset.id].p3;
+        calcularNota(m);
+      }
+    });
+  }
+
+  function actualizarProgreso() {
+    const total = document.querySelectorAll(".materia-columna").length;
+    const ok = document.querySelectorAll(".materia-columna.aprobada").length;
+    document.getElementById("progresoTotal").textContent = total?Math.round(ok/total*100)+"%":"0%";
+  }
+
+  function mostrarSolo(n){
+    document.querySelectorAll(".semestre").forEach(s=>{
+      s.style.display = s.dataset.semestre==n?"block":"none";
+    });
+  }
+
+  function mostrarTodo(){
+    document.querySelectorAll(".semestre").forEach(s=>{
+      s.style.display = "block";
+    });
+  }
+
+  crearMalla();
+  cargarDatos();
+
+  document.querySelectorAll(".materia-columna").forEach(m=>{
+    m.querySelectorAll("input").forEach(input=>{
+      input.addEventListener("input", ()=>calcularNota(m));
+    });
+  });
+</script>
+
 </body>
 </html>
-<div class="materia" 
-     data-id="quimica"
-     data-requisitos="">
-  <div class="materia bloqueada" 
-     data-id="bioquimica"
-     data-requisitos="quimica">
-<div class="malla">
-
-  <!-- MATERIA 1 -->
-  <div class="materia-columna"
-       data-id="quimica"
-       data-semestre="1"
-       data-requisitos="">
-       
-    <h3>Química General</h3>
-    <p class="semestre-label">Semestre 1</p>
-
-    <div class="progresos">
-      <input class="p1" type="number" placeholder="P1">
-      <input class="p2" type="number" placeholder="P2">
-      <input class="p3" type="number" placeholder="P3">
-    </div>
-
-    <p class="nota-final">Nota final: <span>0.00</span></p>
-  </div>
-
-  <!-- MATERIA 2 (con prerrequisito) -->
-  <div class="materia-columna bloqueada"
-       data-id="bioquimica"
-       data-semestre="2"
-       data-requisitos="quimica">
-
-    <h3>Bioquímica</h3>
-    <p class="semestre-label">Semestre 2</p>
-
-    <p class="requisitos">
-      Requisito: Química General
-    </p>
-
-    <div class="progresos">
-      <input class="p1" type="number" placeholder="P1">
-      <input class="p2" type="number" placeholder="P2">
-      <input class="p3" type="number" placeholder="P3">
-    </div>
-
-    <p class="nota-final">Nota final: <span>0.00</span></p>
-  </div>
-
-</div>
-<div class="semestre" data-semestre="1">
-  <h2>Semestre 1</h2>
-  ...
-</div>
-<div class="malla">
-  
-  <div class="semestre" data-semestre="1">
-    <h2>Semestre 1</h2>
-
-    <div class="materia" data-id="quimica" data-requisitos="">
-      ...
-    </div>
-
-    <div class="materia bloqueada" data-id="biologia" data-requisitos="quimica">
-      ...
-    </div>
-  </div>
-
-  <div class="semestre" data-semestre="2">
-    <h2>Semestre 2</h2>
-    ...
-  </div>
-
-</div>
-function mostrarSolo(n) {
-  document.querySelectorAll(".semestre").forEach(s => {
-    s.style.display = s.dataset.semestre == n ? "block" : "none";
-  });
-}
-
-function mostrarTodo() {
-  document.querySelectorAll(".semestre").forEach(s => {
-    s.style.display = "block";
-  });
-}
-    <div class="malla">
-
-  <!-- MATERIA 1 -->
-  <div class="materia-columna"
-       data-id="quimica"
-       data-semestre="1"
-       data-requisitos="">
-       
-    <h3>Química General</h3>
-    <p class="semestre-label">Semestre 1</p>
-
-    <div class="progresos">
-      <input class="p1" type="number" placeholder="P1">
-      <input class="p2" type="number" placeholder="P2">
-      <input class="p3" type="number" placeholder="P3">
-    </div>
-
-    <p class="nota-final">Nota final: <span>0.00</span></p>
-  </div>
-
-  <!-- MATERIA 2 (con prerrequisito) -->
-  <div class="materia-columna bloqueada"
-       data-id="bioquimica"
-       data-semestre="2"
-       data-requisitos="quimica">
-
-    <h3>Bioquímica</h3>
-    <p class="semestre-label">Semestre 2</p>
-
-    <p class="requisitos">
-      Requisito: Química General
-    </p>
-
-    <div class="progresos">
-      <input class="p1" type="number" placeholder="P1">
-      <input class="p2" type="number" placeholder="P2">
-      <input class="p3" type="number" placeholder="P3">
-    </div>
-
-    <p class="nota-final">Nota final: <span>0.00</span></p>
-  </div>
-
-    </div>
