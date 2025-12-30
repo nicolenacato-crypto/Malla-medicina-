@@ -4,202 +4,38 @@
   <meta charset="UTF-8">
   <title>Malla Medicina UDLA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: system-ui, sans-serif; background: #f8fafc; margin:0; padding:15px; }
-    h1, h2 { text-align:center; margin-bottom:8px; }
-    .sub { text-align:center; color:#555; margin-bottom:15px; }
-    .progreso-general { background:#fff; padding:12px; border-radius:12px; margin-bottom:20px; text-align:center; font-weight:bold; }
-    .nav-semestres { text-align:center; margin-bottom:15px; }
-    .nav-semestres button { margin:2px; padding:6px 12px; cursor:pointer; border-radius:6px; border:1px solid #cbd5f5; background:#fff; transition:all 0.2s ease; }
-    .nav-semestres button:hover { background:#e0f2fe; }
-    .malla { display:flex; gap:16px; overflow-x:auto; padding:16px; }
-    .malla::-webkit-scrollbar { height:8px; }
-    .semestre { border-radius:16px; padding:16px; min-width:280px; flex-shrink:0; }
-    .semestre h2 { font-weight:600; }
-    .materia-columna { background:#fff; border-radius:12px; padding:12px; margin-bottom:12px; box-shadow:0 4px 10px rgba(0,0,0,0.05); transition:all 0.3s ease; position:relative; }
-    .materia-columna.aprobada { background:#ecfdf5; border-left:6px solid #22c55e; text-decoration:line-through; }
-    .materia-columna.reprobada { background:#fef2f2; border-left:6px solid #ef4444; }
-    .materia-columna.bloqueada { opacity:0.35; pointer-events:none; transform:scale(0.97); filter:grayscale(100%); }
-    .progresos { display:flex; gap:8px; margin-top:8px; }
-    .progresos input { width:100%; padding:6px; text-align:center; border-radius:6px; border:1px solid #cbd5f5; }
-    .boton { margin-top:8px; width:100%; padding:8px; border:none; border-radius:6px; background:#3b82f6; color:#fff; font-weight:bold; cursor:pointer; transition:all 0.2s ease; }
-    .boton:hover { background:#2563eb; }
-    .acciones { position:absolute; top:8px; right:8px; display:flex; gap:4px; }
-    .acciones button { padding:2px 6px; font-size:12px; cursor:pointer; border-radius:4px; border:none; }
-    .editar { background:#facc15; color:#000; }
-    .eliminar { background:#ef4444; color:#fff; }
-    @media (max-width:768px){ .malla{flex-direction:column;overflow-x:hidden;} .semestre{width:100%;} }
-    @media (min-width:1024px){ .semestre{min-width:300px;} }
-    /* Colores por semestre */
-    .semestre[data-semestre="1"]{ background:#e0f2fe; }
-    .semestre[data-semestre="2"]{ background:#ecfdf5; }
-    .semestre[data-semestre="3"]{ background:#f3e8ff; }
-    .semestre[data-semestre="4"]{ background:#fef9c3; }
-    .semestre[data-semestre="5"]{ background:#e0f7fa; }
-    .semestre[data-semestre="6"]{ background:#fff1f2; }
-    .semestre[data-semestre="7"]{ background:#f0fdf4; }
-    .semestre[data-semestre="8"]{ background:#fdf2f8; }
-    .semestre[data-semestre="9"]{ background:#ecfeff; }
-    .semestre[data-semestre="10"]{ background:#f1f5f9; }
-    .semestre[data-semestre="11"]{ background:#fafaf9; }
-    .semestre[data-semestre="12"]{ background:#f5f3ff; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <h1>Malla Curricular Medicina – UDLA</h1>
-<p class="sub">12 semestres | Agrega, edita y registra tus notas</p>
+<p class="sub">12 semestres | Progreso y notas automáticas</p>
+
+<!-- Navegación por semestre -->
+<div class="nav-semestres">
+  <button onclick="mostrarTodo()">Todos</button>
+  <button onclick="mostrarSolo(1)">1</button>
+  <button onclick="mostrarSolo(2)">2</button>
+  <button onclick="mostrarSolo(3)">3</button>
+  <button onclick="mostrarSolo(4)">4</button>
+  <button onclick="mostrarSolo(5)">5</button>
+  <button onclick="mostrarSolo(6)">6</button>
+  <button onclick="mostrarSolo(7)">7</button>
+  <button onclick="mostrarSolo(8)">8</button>
+  <button onclick="mostrarSolo(9)">9</button>
+  <button onclick="mostrarSolo(10)">10</button>
+  <button onclick="mostrarSolo(11)">11</button>
+  <button onclick="mostrarSolo(12)">12</button>
+</div>
 
 <!-- Progreso general -->
 <div class="progreso-general">
   Progreso total: <span id="progresoTotal">0%</span>
 </div>
 
-<!-- Formulario para agregar materia -->
-<div style="background:#fff;padding:12px;border-radius:12px;margin-bottom:20px;">
-  <h3>Agregar Materia</h3>
-  <input id="nombreMateria" placeholder="Nombre de la materia" style="width:100%;margin-bottom:6px;">
-  <input id="codigoMateria" placeholder="Código" style="width:100%;margin-bottom:6px;">
-  <input id="creditosMateria" type="number" placeholder="Créditos" style="width:100%;margin-bottom:6px;">
-  <input id="semestreMateria" type="number" min="1" max="12" placeholder="Semestre" style="width:100%;margin-bottom:6px;">
-  <input id="requisitosMateria" placeholder="Prerrequisitos (códigos separados por coma)" style="width:100%;margin-bottom:6px;">
-  <button class="boton" onclick="agregarMateria()">Agregar Materia</button>
-</div>
+<!-- Contenedor único donde se generarán los semestres y materias -->
+<div id="contenedor" class="malla"></div>
 
-<!-- Contenedor de semestres -->
-<div class="malla" id="contenedor"></div>
-
-<script>
-let materias = JSON.parse(localStorage.getItem("materias")) || [];
-
-function guardarMaterias() {
-  localStorage.setItem("materias", JSON.stringify(materias));
-}
-
-function calcularNota(p1, p2, p3) {
-  return (p1*0.25 + p2*0.35 + p3*0.40).toFixed(2);
-}
-
-function actualizarBloqueos() {
-  document.querySelectorAll(".materia-columna").forEach(m => {
-    const reqs = m.dataset.requisitos;
-    if(!reqs){ m.classList.remove("bloqueada"); return; }
-    const ok = reqs.split(",").every(r => {
-      const mat = document.querySelector(`[data-id='${r.trim()}']`);
-      return mat && mat.classList.contains("aprobada");
-    });
-    m.classList.toggle("bloqueada", !ok);
-  });
-}
-
-function actualizarProgreso() {
-  const total = document.querySelectorAll(".materia-columna").length;
-  const aprobadas = document.querySelectorAll(".materia-columna.aprobada").length;
-  document.getElementById("progresoTotal").textContent = total ? Math.round(aprobadas/total*100)+"%" : "0%";
-}
-
-function renderMaterias() {
-  const cont = document.getElementById("contenedor");
-  cont.innerHTML = "";
-  for(let s=1; s<=12; s++){
-    const semDiv = document.createElement("div");
-    semDiv.className = "semestre";
-    semDiv.dataset.semestre = s;
-    semDiv.innerHTML = `<h2>Semestre ${s}</h2>`;
-    materias.filter(m=>m.semestre==s).forEach(m=>{
-      const div = document.createElement("div");
-      div.className = "materia-columna bloqueada";
-      div.dataset.id = m.codigo;
-      div.dataset.requisitos = m.requisitos;
-      div.innerHTML = `
-        <div class="acciones">
-          <button class="editar" onclick="editarMateria('${m.codigo}')">Editar</button>
-          <button class="eliminar" onclick="eliminarMateria('${m.codigo}')">Eliminar</button>
-        </div>
-        <h3>${m.nombre}</h3>
-        <small>${m.codigo} | ${m.creditos} créditos</small>
-        <div class="progresos">
-          <input class="p1" type="number" min="0" max="10" placeholder="P1">
-          <input class="p2" type="number" min="0" max="10" placeholder="P2">
-          <input class="p3" type="number" min="0" max="10" placeholder="P3">
-        </div>
-        <p class="nota-final">Nota final: <span>0.00</span></p>
-      `;
-      semDiv.appendChild(div);
-
-      const inputs = div.querySelectorAll("input");
-      const spanNota = div.querySelector("span");
-      inputs.forEach(inp => {
-        inp.addEventListener("input", ()=>{
-          const n = calcularNota(
-            parseFloat(div.querySelector(".p1").value)||0,
-            parseFloat(div.querySelector(".p2").value)||0,
-            parseFloat(div.querySelector(".p3").value)||0
-          );
-          spanNota.textContent = n;
-          div.classList.toggle("aprobada", n>=7);
-          div.classList.toggle("reprobada", n<7);
-          actualizarBloqueos();
-          actualizarProgreso();
-        });
-      });
-    });
-    cont.appendChild(semDiv);
-  }
-  actualizarBloqueos();
-  actualizarProgreso();
-}
-
-function agregarMateria() {
-  const nombre = document.getElementById("nombreMateria").value;
-  const codigo = document.getElementById("codigoMateria").value;
-  const creditos = parseInt(document.getElementById("creditosMateria").value)||0;
-  const semestre = parseInt(document.getElementById("semestreMateria").value)||1;
-  const requisitos = document.getElementById("requisitosMateria").value;
-
-  if(!nombre || !codigo) { alert("Nombre y código son obligatorios"); return; }
-
-  materias.push({nombre,codigo,creditos,semestre,requisitos});
-  guardarMaterias();
-  renderMaterias();
-
-  document.getElementById("nombreMateria").value="";
-  document.getElementById("codigoMateria").value="";
-  document.getElementById("creditosMateria").value="";
-  document.getElementById("semestreMateria").value="";
-  document.getElementById("requisitosMateria").value="";
-}
-
-// Editar materia
-function editarMateria(codigo) {
-  const m = materias.find(x=>x.codigo===codigo);
-  if(!m) return;
-  const nuevoNombre = prompt("Nombre:", m.nombre);
-  const nuevoCodigo = prompt("Código:", m.codigo);
-  const nuevosCred = prompt("Créditos:", m.creditos);
-  const nuevoSem = prompt("Semestre:", m.semestre);
-  const nuevosReq = prompt("Prerrequisitos (códigos separados por coma):", m.requisitos);
-
-  if(nuevoNombre && nuevoCodigo){
-    m.nombre = nuevoNombre;
-    m.codigo = nuevoCodigo;
-    m.creditos = parseInt(nuevosCred)||m.creditos;
-    m.semestre = parseInt(nuevoSem)||m.semestre;
-    m.requisitos = nuevosReq;
-    guardarMaterias();
-    renderMaterias();
-  }
-}
-
-// Eliminar materia
-function eliminarMateria(codigo) {
-  materias = materias.filter(x=>x.codigo!==codigo);
-  guardarMaterias();
-  renderMaterias();
-}
-
-window.onload = renderMaterias;
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
