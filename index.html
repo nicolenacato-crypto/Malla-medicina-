@@ -2,36 +2,53 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Malla Interactiva Medicina – UDLA</title>
+<title>Malla Dinámica Medicina UDLA</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>Malla Interactiva Medicina – UDLA</h1>
-<p class="sub">12 semestres | Progreso y notas automáticas</p>
+<h1>Malla Curricular Dinámica Medicina – UDLA</h1>
+<p class="sub">Añade semestres, materias y notas automáticamente</p>
 
+<!-- Formulario para agregar materias -->
+<form id="formMateria">
+  <h3>Añadir Materia</h3>
+  <label>Semestre:</label>
+  <input type="number" id="semestreInput" min="1" max="12" placeholder="Número de semestre">
+  <label>Nombre de la materia:</label>
+  <input type="text" id="nombreInput" placeholder="Nombre de la materia">
+  <label>Créditos:</label>
+  <input type="number" id="creditosInput" min="1" max="10" placeholder="Créditos">
+  <label>Requisitos (separar por coma):</label>
+  <input type="text" id="requisitosInput" placeholder="Materia1,Materia2">
+  <button type="submit" class="boton">Agregar materia</button>
+</form>
+
+<!-- Progreso general -->
 <div class="progreso-general">
   Progreso total: <span id="progresoTotal">0%</span>
 </div>
 
-<div class="add-section">
-  <h3>Añadir Semestre</h3>
-  <input type="number" id="nuevoSemestre" min="1" placeholder="Número de semestre">
-  <button onclick="crearSemestre()">Añadir Semestre</button>
+<!-- Navegación semestres -->
+<div class="nav-semestres">
+  <button onclick="mostrarTodo()">Todos</button>
+  <button onclick="mostrarSolo(1)">1</button>
+  <button onclick="mostrarSolo(2)">2</button>
+  <button onclick="mostrarSolo(3)">3</button>
+  <button onclick="mostrarSolo(4)">4</button>
+  <button onclick="mostrarSolo(5)">5</button>
+  <button onclick="mostrarSolo(6)">6</button>
+  <button onclick="mostrarSolo(7)">7</button>
+  <button onclick="mostrarSolo(8)">8</button>
+  <button onclick="mostrarSolo(9)">9</button>
+  <button onclick="mostrarSolo(10)">10</button>
+  <button onclick="mostrarSolo(11)">11</button>
+  <button onclick="mostrarSolo(12)">12</button>
 </div>
 
-<div class="add-section">
-  <h3>Añadir Materia</h3>
-  <select id="semestreMateria"></select>
-  <input type="text" id="nombreMateria" placeholder="Nombre de materia">
-  <input type="text" id="codigoMateria" placeholder="Código">
-  <input type="number" id="creditosMateria" placeholder="Créditos" min="1">
-  <input type="text" id="requisitosMateria" placeholder="Prerrequisitos (códigos, separados por coma)">
-  <button onclick="agregarMateriaUsuario()">Añadir Materia</button>
-</div>
-
-<div class="malla" id="contenedor"></div>
+<!-- Contenedor malla -->
+<div id="contenedor" class="malla"></div>
 
 <script src="script.js"></script>
 </body>
