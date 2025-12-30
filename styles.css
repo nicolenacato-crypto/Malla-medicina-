@@ -78,3 +78,107 @@ h1 {
 .materia {
   transition: all 0.3s ease;
 }
+.semestre[data-semestre="1"]  { background: #e0f2fe; }
+.semestre[data-semestre="2"]  { background: #ecfdf5; }
+.semestre[data-semestre="3"]  { background: #f3e8ff; }
+.semestre[data-semestre="4"]  { background: #fef9c3; }
+.semestre[data-semestre="5"]  { background: #e0f7fa; }
+.semestre[data-semestre="6"]  { background: #fff1f2; }
+.semestre[data-semestre="7"]  { background: #f0fdf4; }
+.semestre[data-semestre="8"]  { background: #fdf2f8; }
+.semestre[data-semestre="9"]  { background: #ecfeff; }
+.semestre[data-semestre="10"] { background: #f1f5f9; }
+.semestre[data-semestre="11"] { background: #fafaf9; }
+.semestre[data-semestre="12"] { background: #f5f3ff; }
+.malla {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  overflow-x: auto;
+}
+@media (max-width: 768px) {
+  .malla {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .semestre {
+    width: 100%;
+  }
+}
+@media (min-width: 1024px) {
+  .semestre {
+    min-width: 300px;
+  }
+}
+.semestre {
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.materia {
+  margin-bottom: 12px;
+}
+body {
+  background: #f8fafc;
+  font-family: system-ui, sans-serif;
+}
+.semestre {
+  background: #e0f2fe;
+  border-radius: 14px;
+  padding: 16px;
+  min-width: 280px;
+}
+.semestre h2 {
+  text-align: center;
+  font-weight: 600;
+}
+.materia {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.materia.aprobada {
+  background: #ecfdf5;
+  border-left: 6px solid #22c55e;
+}
+
+.materia.reprobada {
+  background: #fef2f2;
+  border-left: 6px solid #ef4444;
+}
+
+.materia.bloqueada {
+  opacity: 0.35;
+  pointer-events: none;
+  transform: scale(0.97);
+  filter: grayscale(100%);
+}
+.progresos {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.progresos input {
+  width: 100%;
+  padding: 6px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #cbd5f5;
+}
+
+.malla {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px;
+}
+
+.malla::-webkit-scrollbar {
+  height: 8px;
+}
