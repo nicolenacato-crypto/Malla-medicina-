@@ -1,156 +1,48 @@
-/* ===== BODY ===== */
-body {
+  body {
   font-family: system-ui, sans-serif;
-  background-color: #e6e0f8; /* Fondo lila */
+  background-color: #d8c1f9; /* fondo lila */
   margin: 0;
   padding: 15px;
 }
 
-/* ===== TITULOS ===== */
-h1 {
-  text-align: center;
-  margin-bottom: 5px;
-}
+h1 { text-align:center; margin-bottom:5px; }
+.sub { text-align:center; color:#555; margin-bottom:15px; }
 
-.sub {
-  text-align: center;
-  color: #555;
-  margin-bottom: 15px;
+form {
+  background:#fff; padding:12px; border-radius:12px; margin-bottom:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
 }
+form input, form select { margin:4px 0; padding:6px; border-radius:6px; border:1px solid #cbd5f5; width:100%; }
+.boton { margin-top:8px; width:100%; padding:8px; border:none; border-radius:6px; background-color:#a890f0; color:#3b0764; font-weight:bold; cursor:pointer; }
+.boton:hover { background-color:#7f61e6; }
 
-/* ===== NAVEGACIÓN SEMESTRES ===== */
-.nav-semestres {
-  text-align: center;
-  margin-bottom: 20px;
-}
+.nav-semestres { text-align:center; margin-bottom:20px; }
+.nav-semestres button { margin:2px; padding:6px 12px; border-radius:6px; border:none; cursor:pointer; background-color:#c5b3f8; color:#3b0764; font-weight:bold; }
+.nav-semestres button:hover { background-color:#a890f0; }
 
-.nav-semestres button {
-  margin: 2px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  background-color: #c5b3f8;
-  color: #3b0764;
-  font-weight: bold;
-  transition: 0.2s;
-}
+.progreso-general { background: #fff; padding: 12px; border-radius:12px; margin-bottom:20px; text-align:center; font-weight:bold; box-shadow:0 3px 6px rgba(0,0,0,0.1); }
 
-.nav-semestres button:hover {
-  background-color: #a890f0;
-}
+.malla { display:flex; gap:16px; overflow-x:auto; padding:16px; }
+.malla::-webkit-scrollbar { height:8px; }
 
-/* ===== PROGRESO GENERAL ===== */
-.progreso-general {
-  background: #ffffff;
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-weight: bold;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
+.semestre { border-radius:14px; padding:16px; min-width:280px; flex-shrink:0; }
+.semestre h2 { text-align:center; font-weight:600; margin-bottom:12px; }
 
-/* ===== MALLA Y SEMESTRES ===== */
-.malla {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 16px;
-}
-
-.malla::-webkit-scrollbar {
-  height: 8px;
-}
-
-.semestre {
-  background: #f3e8ff; /* Fondo lila suave para cada semestre */
-  border-radius: 14px;
-  padding: 16px;
-  min-width: 280px;
-  flex-shrink: 0;
-}
-
-.semestre h2 {
-  text-align: center;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-/* ===== MATERIAS ===== */
 .materia {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
+  background:#fff; border-radius:12px; padding:12px; margin-bottom:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05); transition:all 0.3s ease;
 }
+.materia.aprobada { background:#ecfdf5; border-left:6px solid #22c55e; text-decoration:line-through; }
+.materia.reprobada { background:#fef2f2; border-left:6px solid #ef4444; }
+.materia.bloqueada { opacity:0.35; pointer-events:none; transform:scale(0.97); filter:grayscale(100%); }
 
-.materia.aprobada {
-  background: #ecfdf5;
-  border-left: 6px solid #22c55e;
-  text-decoration: line-through;
-}
+.progresos { display:flex; gap:8px; margin-top:8px; }
+.progresos input { width:100%; padding:6px; text-align:center; border-radius:6px; border:1px solid #cbd5f5; }
 
-.materia.reprobada {
-  background: #fef2f2;
-  border-left: 6px solid #ef4444;
-}
+.materia button { margin-top:5px; padding:6px 8px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
+.materia button.editar { background:#fcd34d; color:#713f12; margin-right:5px; }
+.materia button.editar:hover { background:#fbbf24; }
+.materia button.eliminar { background:#f87171; color:#7f1d1d; }
+.materia button.eliminar:hover { background:#ef4444; }
 
-.materia.bloqueada {
-  opacity: 0.35;
-  pointer-events: none;
-  transform: scale(0.97);
-  filter: grayscale(100%);
-}
-
-/* ===== INPUTS NOTAS ===== */
-.progresos {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.progresos input {
-  width: 100%;
-  padding: 6px;
-  text-align: center;
-  border-radius: 6px;
-  border: 1px solid #cbd5f5;
-}
-
-/* ===== BOTÓN DE APROBAR ===== */
-.boton {
-  margin-top: 8px;
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 6px;
-  background-color: #a890f0;
-  color: #3b0764;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.boton:hover {
-  background-color: #7f61e6;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .malla {
-    flex-direction: column;
-    overflow-x: hidden;
-  }
-
-  .semestre {
-    width: 100%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .semestre {
-    min-width: 300px;
-  }
-}
+@media(max-width:768px){ .malla{flex-direction:column; overflow-x:hidden;} .semestre{width:100%;} }
