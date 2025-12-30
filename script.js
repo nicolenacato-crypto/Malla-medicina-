@@ -149,3 +149,43 @@ data.forEach(s=>{
 });
 
 cargar();
+function actualizarBloqueos() {
+  const materias = document.querySelectorAll(".materia");
+
+  materias.forEach((materia, index) => {
+    if (index === 0) return;
+
+    const anterior = materias[index - 1];
+
+    if (!anterior.classList.contains("aprobada")) {
+      materia.classList.add("bloqueada");
+    } else {
+      materia.classList.remove("bloqueada");
+    }
+  });
+}
+function calcularNota(materia) {
+  const p1 = parseFloat(materia.querySelector(".p1").value) || 0;
+  const p2 = parseFloat(materia.querySelector(".p2").value) || 0;
+  const p3 = parseFloat(materia.querySelector(".p3").value) || 0;
+
+  const notaFinal = (p1 * 0.25) + (p2 * 0.35) + (p3 * 0.40);
+  const span = materia.querySelector(".nota-final span");
+
+  span.textContent = notaFinal.toFixed(2);
+
+  if (notaFinal >= 7) {
+    materia.classList.add("aprobada");
+    materia.classList.remove("reprobada");
+  } else {
+    materia.classList.add("reprobada");
+    materia.classList.remove("aprobada");
+  }
+
+  actualizarBloqueos();
+}
+document.querySelectorAll(".materia").forEach(materia => {
+  materia.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", () => calcularNota(materia));
+  });
+});
