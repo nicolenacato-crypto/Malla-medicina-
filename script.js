@@ -239,3 +239,20 @@ function guardarDatos() {
 }
 
 window.onload = cargarDatos;
+function actualizarBloqueos() {
+  document.querySelectorAll(".materia-columna").forEach(materia => {
+    const reqs = materia.dataset.requisitos;
+    if (!reqs) {
+      materia.classList.remove("bloqueada");
+      return;
+    }
+
+    const ok = reqs.split(",").every(id => {
+      const r = document.querySelector(`.materia-columna[data-id="${id}"]`);
+      return r && r.classList.contains("aprobada");
+    });
+
+    materia.classList.toggle("bloqueada", !ok);
+  });
+}
+  materia.classList.add("aprobada");
