@@ -14,9 +14,25 @@
 <div class="progreso-general">
   Progreso total: <span id="progresoTotal">0%</span>
 </div>
+<div class="materia bloqueada">
+  <h3>Química General para Medicina</h3>
 
+  <div class="progresos">
+    <input type="number" class="p1" placeholder="P1">
+    <input type="number" class="p2" placeholder="P2">
+    <input type="number" class="p3" placeholder="P3">
+  </div>
+
+  <p class="nota-final">Nota final: <span>0.00</span></p>
+</div>
 <div id="contenedor"></div>
 
 <script src="script.js"></script>
 </body>
 </html>
+<div class="materia" 
+     data-id="quimica"
+     data-requisitos="">
+  <div class="materia bloqueada" 
+     data-id="bioquimica"
+     data-requisitos="quimica">
