@@ -1,81 +1,98 @@
-// Datos de ejemplo, puedes agregar más materias y semestres
-const data = [
-  { semestre: "1", materias: [
-    { nombre:"Química General", codigo:"MED101", creditos:5, requisitos:[] },
-    { nombre:"Anatomía I", codigo:"MED102", creditos:6, requisitos:[] }
-  ]},
-  { semestre: "2", materias: [
-    { nombre:"Bioquímica", codigo:"MED201", creditos:5, requisitos:["MED101"] },
-    { nombre:"Anatomía II", codigo:"MED202", creditos:6, requisitos:["MED102"] }
-  ]}
-];
-
+let materias = []; // aquí se guardan todas las materias dinámicamente
 const contenedor = document.getElementById("contenedor");
 
-// Crear semestres y materias dinámicamente
-data.forEach(s => {
-  const divSemestre = document.createElement("div");
-  divSemestre.className = "semestre";
-  divSemestre.dataset.semestre = s.semestre;
-  divSemestre.innerHTML = `<h2>Semestre ${s.semestre}</h2>`;
+/* ===== Crear materia ===== */
+function crearMateria(m) {
+  const mat = document.createElement("div");
+  mat.className = "materia-columna bloqueada";
+  mat.dataset.id = m.codigo;
+  mat.dataset.semestre = m.semestre;
+  mat.dataset.requisitos = m.requisitos || "";
 
-  s.materias.forEach(m => {
-    const mat = document.createElement("div");
-    mat.className = "materia-columna";
-    mat.dataset.id = m.codigo;
-    mat.dataset.requisitos = m.requisitos.join(",");
+  mat.innerHTML = `
+    <h3>${m.nombre}</h3>
+    <p>Créditos: ${m.creditos}</p>
+    <p>Prerrequisitos: ${m.requisitos || "Ninguno"}</p>
+    <div class="progresos">
+      <input class="p1" type="number" min="0" max="10" placeholder="P1">
+      <input class="p2" type="number" min="0" max="10" placeholder="P2">
+      <input class="p3" type="number" min="0" max="10" placeholder="P3">
+    </div>
+    <p class="nota-final">Nota final: <span>0.00</span></p>
+  `;
 
-    mat.innerHTML = `
-      <h3>${m.nombre}</h3>
-      <small>${m.codigo} | ${m.creditos} créditos</small>
-      <div class="progresos">
-        <input class="p1" type="number" min="0" max="10" placeholder="P1">
-        <input class="p2" type="number" min="0" max="10" placeholder="P2">
-        <input class="p3" type="number" min="0" max="10" placeholder="P3">
-      </div>
-      <p class="nota-final">Nota final: <span>0.00</span></p>
-    `;
-
-    divSemestre.appendChild(mat);
+  // eventos para calcular nota
+  const inputs = mat.querySelectorAll("input");
+  inputs.forEach(i => {
+    i.addEventListener("input", () => calcularNota(mat));
   });
 
-  contenedor.appendChild(divSemestre);
-});
-
-// Calcular nota y actualizar estados
-function calcularNota(materia) {
-  const p1 = parseFloat(materia.querySelector(".p1").value) || 0;
-  const p2 = parseFloat(materia.querySelector(".p2").value) || 0;
-  const p3 = parseFloat(materia.querySelector(".p3").value) || 0;
-  const nota = p1*0.25 + p2*0.35 + p3*0.40;
-
-  materia.querySelector("span").textContent = nota.toFixed(2);
-
-  materia.classList.toggle("aprobada", nota >= 7);
-  materia.classList.toggle("reprobada", nota < 7);
-
-  guardarDatos();
+  contenedor.appendChild(mat);
+  materias.push(m);
   actualizarBloqueos();
 }
 
-// Guardar notas en localStorage
+/* ===== Calcular nota ===== */
+function calcularNota(mat) {
+  const p1 = parseFloat(mat.querySelector(".p1").value) || 0;
+  const p2 = parseFloat(mat.querySelector(".p2").value) || 0;
+  const p3 = parseFloat(mat.querySelector(".p3").value) || 0;
+  const final = (p1*0.25 + p2*0.35 + p3*0.4).toFixed(2);
+  mat.querySelector(".nota-final span").textContent = final;
+
+  if(final >= 7){
+    mat.classList.add("aprobada");
+    mat.classList.remove("reprobada");
+  } else {
+    mat.classList.add("reprobada");
+    mat.classList.remove("aprobada");
+  }
+
+  actualizarBloqueos();
+  guardarDatos();
+  actualizarProgresoTotal();
+}
+
+/* ===== Bloqueo por prerrequisitos ===== */
+function actualizarBloqueos() {
+  document.querySelectorAll(".materia-columna").forEach(mat => {
+    const reqs = mat.dataset.requisitos;
+    if(!reqs) {
+      mat.classList.remove("bloqueada");
+      return;
+    }
+    const aprobadas = reqs.split(",").every(id=>{
+      const r = document.querySelector(`[data-id="${id.trim()}"]`);
+      return r && r.classList.contains("aprobada");
+    });
+    mat.classList.toggle("bloqueada", !aprobadas);
+  });
+}
+
+/* ===== Progreso total ===== */
+function actualizarProgresoTotal() {
+  const todas = document.querySelectorAll(".materia-columna").length;
+  const aprobadas = document.querySelectorAll(".materia-columna.aprobada").length;
+  document.getElementById("progresoTotal").textContent = todas ? Math.round(aprobadas/todas*100)+"%" : "0%";
+}
+
+/* ===== Guardar y cargar ===== */
 function guardarDatos() {
   const datos = {};
-  document.querySelectorAll(".materia-columna").forEach(m => {
+  document.querySelectorAll(".materia-columna").forEach(m=>{
     datos[m.dataset.id] = {
       p1: m.querySelector(".p1").value,
       p2: m.querySelector(".p2").value,
       p3: m.querySelector(".p3").value
     };
   });
-  localStorage.setItem("notasMalla", JSON.stringify(datos));
+  localStorage.setItem("mallaNotas", JSON.stringify(datos));
 }
 
-// Cargar notas desde localStorage
 function cargarDatos() {
-  const datos = JSON.parse(localStorage.getItem("notasMalla")) || {};
-  document.querySelectorAll(".materia-columna").forEach(m => {
-    if (!datos[m.dataset.id]) return;
+  const datos = JSON.parse(localStorage.getItem("mallaNotas")) || {};
+  document.querySelectorAll(".materia-columna").forEach(m=>{
+    if(!datos[m.dataset.id]) return;
     m.querySelector(".p1").value = datos[m.dataset.id].p1;
     m.querySelector(".p2").value = datos[m.dataset.id].p2;
     m.querySelector(".p3").value = datos[m.dataset.id].p3;
@@ -83,41 +100,36 @@ function cargarDatos() {
   });
 }
 
-// Bloquear materias según prerrequisitos
-function actualizarBloqueos() {
-  document.querySelectorAll(".materia-columna").forEach(m => {
-    const reqs = m.dataset.requisitos;
-    if (!reqs) {
-      m.classList.remove("bloqueada");
-      return;
-    }
-    const ok = reqs.split(",").every(id => {
-      const r = document.querySelector(`[data-id="${id}"]`);
-      return r && r.classList.contains("aprobada");
-    });
-    m.classList.toggle("bloqueada", !ok);
+/* ===== Mostrar semestres ===== */
+function mostrarSolo(n){
+  document.querySelectorAll(".materia-columna").forEach(m=>{
+    m.style.display = m.dataset.semestre==n ? "block" : "none";
   });
 }
 
-// Eventos input
-document.querySelectorAll(".materia-columna").forEach(m => {
-  m.querySelectorAll("input").forEach(i => {
-    i.addEventListener("input", () => calcularNota(m));
-  });
-});
-
-// Mostrar semestres
-function mostrarSolo(n) {
-  document.querySelectorAll(".semestre").forEach(s => {
-    s.style.display = s.dataset.semestre == n ? "block" : "none";
+function mostrarTodo(){
+  document.querySelectorAll(".materia-columna").forEach(m=>{
+    m.style.display = "block";
   });
 }
-function mostrarTodo() {
-  document.querySelectorAll(".semestre").forEach(s => s.style.display = "block");
+
+/* ===== Agregar materia desde formulario ===== */
+function agregarMateria(){
+  const nombre = document.getElementById("nombreMateria").value;
+  const codigo = document.getElementById("codigoMateria").value;
+  const creditos = parseInt(document.getElementById("creditosMateria").value);
+  const semestre = parseInt(document.getElementById("semestreMateria").value);
+  const requisitos = document.getElementById("requisitosMateria").value;
+
+  if(!nombre || !codigo || !creditos || !semestre) return alert("Llena todos los campos");
+
+  crearMateria({nombre,codigo,creditos,semestre,requisitos});
+  document.getElementById("nombreMateria").value="";
+  document.getElementById("codigoMateria").value="";
+  document.getElementById("creditosMateria").value="";
+  document.getElementById("semestreMateria").value="";
+  document.getElementById("requisitosMateria").value="";
 }
 
-// Cargar datos al inicio
-window.onload = () => {
-  cargarDatos();
-  actualizarBloqueos();
-};
+/* ===== Inicializar ===== */
+window.onload = cargarDatos;
