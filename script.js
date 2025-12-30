@@ -1,258 +1,165 @@
-const data = [
-  { semestre: "Semestre 1", materias: [
-    { nombre:"Química General para Medicina", codigo:"MED101", creditos:5 },
-    { nombre:"Anatomía Clínica e Imagenológica I", codigo:"MED102", creditos:6 },
-    { nombre:"Histología", codigo:"MED103", creditos:4 },
-    { nombre:"Psicología Médica", codigo:"MED104", creditos:3 },
-    { nombre:"Historia del Conocimiento Médico", codigo:"MED105", creditos:3 },
-    { nombre:"Aprendizaje Estratégico y Liderazgo", codigo:"UNI101", creditos:3 },
-    { nombre:"Comunicación Efectiva", codigo:"UNI102", creditos:3 }
-  ]},
-
-  { semestre: "Semestre 2", materias: [
-    { nombre:"Biología Celular y Molecular I", codigo:"MED201", creditos:5 },
-    { nombre:"Anatomía Clínica e Imagenológica II", codigo:"MED202", creditos:6 },
-    { nombre:"Embriología", codigo:"MED203", creditos:4 },
-    { nombre:"Neuroanatomía", codigo:"MED204", creditos:4 },
-    { nombre:"Procedimientos Básicos I", codigo:"MED205", creditos:3 },
-    { nombre:"Pensamiento Crítico Aplicado", codigo:"UNI201", creditos:3 },
-    { nombre:"Interacción Social", codigo:"UNI202", creditos:3 }
-  ]},
-
-  { semestre: "Semestre 3", materias: [
-    { nombre:"Biología Celular y Molecular II", codigo:"MED301", creditos:5 },
-    { nombre:"Microbiología I", codigo:"MED302", creditos:4 },
-    { nombre:"Fisiología Médica I", codigo:"MED303", creditos:6 },
-    { nombre:"Patología I", codigo:"MED304", creditos:5 },
-    { nombre:"Bioestadística", codigo:"MED305", creditos:3 },
-    { nombre:"Lenguaje Cuantitativo", codigo:"UNI301", creditos:3 }
-  ]},
-
-  { semestre: "Semestre 4", materias: [
-    { nombre:"Bioquímica Médica", codigo:"MED401", creditos:5 },
-    { nombre:"Microbiología II", codigo:"MED402", creditos:4 },
-    { nombre:"Fisiología Médica II", codigo:"MED403", creditos:6 },
-    { nombre:"Patología II", codigo:"MED404", creditos:5 },
-    { nombre:"Neurofisiología", codigo:"MED405", creditos:4 },
-    { nombre:"Propedéutica Clínica I", codigo:"MED406", creditos:4 },
-    { nombre:"Procedimientos Básicos II", codigo:"MED407", creditos:3 }
-  ]},
-
-  { semestre: "Semestre 5", materias: [
-    { nombre:"Farmacología I", codigo:"MED501", creditos:5 },
-    { nombre:"Nutrición", codigo:"MED502", creditos:3 },
-    { nombre:"Genética", codigo:"MED503", creditos:4 },
-    { nombre:"Diagnóstico por Imagen I", codigo:"MED504", creditos:3 },
-    { nombre:"Psicopatología I", codigo:"MED505", creditos:4 },
-    { nombre:"Propedéutica Clínica II", codigo:"MED506", creditos:4 },
-    { nombre:"Promoción de la Salud", codigo:"MED507", creditos:3 },
-    { nombre:"Bioética y Legislación Médica", codigo:"MED508", creditos:3 }
-  ]},
-
-  { semestre: "Semestre 6", materias: [
-    { nombre:"Farmacología II", codigo:"MED601", creditos:5 },
-    { nombre:"Diagnóstico por Imagen II", codigo:"MED602", creditos:3 },
-    { nombre:"Psicopatología II", codigo:"MED603", creditos:4 },
-    { nombre:"Propedéutica Sistema Nervioso", codigo:"MED604", creditos:4 },
-    { nombre:"Propedéutica Clínica III", codigo:"MED605", creditos:4 },
-    { nombre:"Procedimientos Básicos III", codigo:"MED606", creditos:3 },
-    { nombre:"Salud Pública y Epidemiología", codigo:"MED607", creditos:4 }
-  ]},
-
-  { semestre: "Semestre 7", materias: [
-    { nombre:"Neumología", codigo:"MED701", creditos:4 },
-    { nombre:"Nefrología", codigo:"MED702", creditos:4 },
-    { nombre:"Dermatología", codigo:"MED703", creditos:3 },
-    { nombre:"Salud Mental I", codigo:"MED704", creditos:4 },
-    { nombre:"Pediatría I", codigo:"MED705", creditos:5 },
-    { nombre:"Neurología", codigo:"MED706", creditos:4 },
-    { nombre:"Cardiología", codigo:"MED707", creditos:5 },
-    { nombre:"Electiva Infectología", codigo:"MED708", creditos:3 }
-  ]},
-
-  { semestre: "Semestre 8", materias: [
-    { nombre:"Hemato-Oncología", codigo:"MED801", creditos:4 },
-    { nombre:"Inmunología y Reumatología", codigo:"MED802", creditos:4 },
-    { nombre:"Salud Mental II", codigo:"MED803", creditos:4 },
-    { nombre:"Pediatría II", codigo:"MED804", creditos:5 },
-    { nombre:"Medicina Paliativa", codigo:"MED805", creditos:3 },
-    { nombre:"Protocolo de Investigación", codigo:"MED806", creditos:3 },
-    { nombre:"Endocrinología", codigo:"MED807", creditos:4 },
-    { nombre:"Gastroenterología", codigo:"MED808", creditos:4 }
-  ]},
-
-  { semestre: "Semestre 9", materias: [
-    { nombre:"Procedimientos Clínicos I", codigo:"MED901", creditos:4 },
-    { nombre:"Toxicología", codigo:"MED902", creditos:3 },
-    { nombre:"Medicina Legal", codigo:"MED903", creditos:3 },
-    { nombre:"Ginecología", codigo:"MED904", creditos:5 },
-    { nombre:"Cirugía General", codigo:"MED905", creditos:6 }
-  ]},
-
-  { semestre: "Semestre 10", materias: [
-    { nombre:"Cirugía Cardiotorácica y Vascular", codigo:"MED1001", creditos:4 },
-    { nombre:"Ortopedia y Traumatología", codigo:"MED1002", creditos:4 },
-    { nombre:"Oftalmología y ORL", codigo:"MED1003", creditos:4 },
-    { nombre:"Urología y Salud Sexual", codigo:"MED1004", creditos:3 },
-    { nombre:"Procedimientos Clínicos II", codigo:"MED1005", creditos:4 },
-    { nombre:"Especialidades Pediátricas", codigo:"MED1006", creditos:4 },
-    { nombre:"Obstetricia", codigo:"MED1007", creditos:5 }
-  ]},
-
-  { semestre: "Semestre 11 – Internado Rotativo", materias: [
-    { nombre:"Medicina Interna", codigo:"INT1101", creditos:12 },
-    { nombre:"Cirugía", codigo:"INT1102", creditos:12 },
-    { nombre:"Ginecología y Obstetricia", codigo:"INT1103", creditos:12 },
-    { nombre:"Pediatría", codigo:"INT1104", creditos:12 },
-    { nombre:"Pre-Rural", codigo:"INT1105", creditos:8 }
-  ]}
-];
-
 const contenedor = document.getElementById("contenedor");
 
-function guardar(){ localStorage.setItem("mallaUDLA", contenedor.innerHTML); }
-function cargar(){ const g = localStorage.getItem("mallaUDLA"); if(g) contenedor.innerHTML = g; actualizar(); }
-function actualizar(){
-  const total = document.querySelectorAll(".materia").length;
-  const ok = document.querySelectorAll(".materia.aprobada").length;
-  document.getElementById("progresoTotal").textContent =
-    total ? Math.round(ok/total*100) + "%" : "0%";
-}
+/* ===== CREAR MALLA ===== */
+data.forEach((s, semIndex) => {
+  s.materias.forEach(m => {
+    const mat = document.createElement("div");
+    mat.className = "materia-columna bloqueada";
+    mat.dataset.id = m.codigo;
+    mat.dataset.semestre = semIndex + 1;
+    mat.dataset.requisitos = ""; // luego puedes llenar
 
-data.forEach(s=>{
-  const d=document.createElement("div");
-  d.className="semestre";
-  d.innerHTML=`<h2>${s.semestre}</h2>`;
-  s.materias.forEach(m=>{
-    const mat=document.createElement("div");
-    mat.className="materia";
-    mat.innerHTML=`
-      <strong>${m.nombre}</strong><br>
+    mat.innerHTML = `
+      <h3>${m.nombre}</h3>
+      <p class="semestre-label">Semestre ${semIndex + 1}</p>
       <small>${m.codigo} | ${m.creditos} créditos</small>
-      <div class="inputs">
-        <input type="number" placeholder="P1">
-        <input type="number" placeholder="P2">
-        <input type="number" placeholder="P3">
+
+      <div class="progresos">
+        <input class="p1" type="number" min="0" max="10" placeholder="P1">
+        <input class="p2" type="number" min="0" max="10" placeholder="P2">
+        <input class="p3" type="number" min="0" max="10" placeholder="P3">
       </div>
-      <p>Nota final: <span class="final">0.00</span></p>
-      <button class="boton">Aprobar</button>`;
-    const i=mat.querySelectorAll("input");
-    const f=mat.querySelector(".final");
-    mat.addEventListener("input",()=>{
-      const n=i[0].value*0.25+i[1].value*0.35+i[2].value*0.4;
-      f.textContent=n.toFixed(2); guardar();
-    });
-    mat.querySelector(".boton").onclick=()=>{ mat.classList.toggle("aprobada"); actualizar(); guardar(); };
-    d.appendChild(mat);
+
+      <p class="nota-final">Nota final: <span>0.00</span></p>
+    `;
+
+    contenedor.appendChild(mat);
   });
-  contenedor.appendChild(d);
 });
 
-cargar();
-function actualizarBloqueos() {
-  const materias = document.querySelectorAll(".materia");
-
-  materias.forEach((materia, index) => {
-    if (index === 0) return;
-
-    const anterior = materias[index - 1];
-
-    if (!anterior.classList.contains("aprobada")) {
-      materia.classList.add("bloqueada");
-    } else {
-      materia.classList.remove("bloqueada");
-    }
-  });
-}
+/* ===== CALCULAR NOTA ===== */
 function calcularNota(materia) {
   const p1 = parseFloat(materia.querySelector(".p1").value) || 0;
   const p2 = parseFloat(materia.querySelector(".p2").value) || 0;
   const p3 = parseFloat(materia.querySelector(".p3").value) || 0;
 
-  const notaFinal = (p1 * 0.25) + (p2 * 0.35) + (p3 * 0.40);
-  const span = materia.querySelector(".nota-final span");
+  const nota = p1 * 0.25 + p2 * 0.35 + p3 * 0.40;
+  materia.querySelector("span").textContent = nota.toFixed(2);
 
-  span.textContent = notaFinal.toFixed(2);
+  materia.classList.toggle("aprobada", nota >= 7);
+  materia.classList.toggle("reprobada", nota < 7);
 
-  if (notaFinal >= 7) {
-    materia.classList.add("aprobada");
-    materia.classList.remove("reprobada");
-  } else {
-    materia.classList.add("reprobada");
-    materia.classList.remove("aprobada");
-  }
-
+  guardarDatos();
   actualizarBloqueos();
 }
-document.querySelectorAll(".materia").forEach(materia => {
-  materia.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", () => calcularNota(materia));
-  });
-});
+
+/* ===== BLOQUEO POR PRERREQUISITOS ===== */
 function actualizarBloqueos() {
-  document.querySelectorAll(".materia").forEach(materia => {
-    const requisitos = materia.dataset.requisitos;
-
-    if (!requisitos) {
-      materia.classList.remove("bloqueada");
-      return;
-    }
-
-    const lista = requisitos.split(",");
-    const aprobadas = lista.every(id => {
-      const req = document.querySelector(`.materia[data-id="${id}"]`);
-      return req && req.classList.contains("aprobada");
-    });
-
-    if (aprobadas) {
-      materia.classList.remove("bloqueada");
-    } else {
-      materia.classList.add("bloqueada");
-    }
-  });
-function guardarDatos() {
-  const datos = {};
-
-  document.querySelectorAll(".materia").forEach(materia => {
-    datos[materia.dataset.id] = {
-      p1: materia.querySelector(".p1").value,
-      p2: materia.querySelector(".p2").value,
-      p3: materia.querySelector(".p3").value
-    };
-  });
-
-  localStorage.setItem("mallaNotas", JSON.stringify(datos));
-}
-  function cargarDatos() {
-  const datos = JSON.parse(localStorage.getItem("mallaNotas")) || {};
-
-  document.querySelectorAll(".materia").forEach(materia => {
-    const d = datos[materia.dataset.id];
-    if (!d) return;
-
-    materia.querySelector(".p1").value = d.p1;
-    materia.querySelector(".p2").value = d.p2;
-    materia.querySelector(".p3").value = d.p3;
-
-    calcularNota(materia);
-  });
-}
-
-window.onload = cargarDatos;
-function actualizarBloqueos() {
-  document.querySelectorAll(".materia-columna").forEach(materia => {
-    const reqs = materia.dataset.requisitos;
+  document.querySelectorAll(".materia-columna").forEach(m => {
+    const reqs = m.dataset.requisitos;
     if (!reqs) {
-      materia.classList.remove("bloqueada");
+      m.classList.remove("bloqueada");
       return;
     }
 
     const ok = reqs.split(",").every(id => {
-      const r = document.querySelector(`.materia-columna[data-id="${id}"]`);
+      const r = document.querySelector(`[data-id="${id}"]`);
       return r && r.classList.contains("aprobada");
     });
 
-    materia.classList.toggle("bloqueada", !ok);
+    m.classList.toggle("bloqueada", !ok);
   });
 }
-  materia.classList.add("aprobada");
+
+/* ===== GUARDAR NOTAS ===== */
+function guardarDatos() {
+  const datos = {};
+  document.querySelectorAll(".materia-columna").forEach(m => {
+    datos[m.dataset.id] = {
+      p1: m.querySelector(".p1").value,
+      p2: m.querySelector(".p2").value,
+      p3: m.querySelector(".p3").value
+    };
+  });
+  localStorage.setItem("notasMalla", JSON.stringify(datos));
+}
+
+/* ===== CARGAR NOTAS ===== */
+function cargarDatos() {
+  const datos = JSON.parse(localStorage.getItem("notasMalla")) || {};
+  document.querySelectorAll(".materia-columna").forEach(m => {
+    if (!datos[m.dataset.id]) return;
+    m.querySelector(".p1").value = datos[m.dataset.id].p1;
+    m.querySelector(".p2").value = datos[m.dataset.id].p2;
+    m.querySelector(".p3").value = datos[m.dataset.id].p3;
+    calcularNota(m);
+  });
+}
+const materias = [
+  { codigo: "MED101", nombre: "Anatomía I", semestre: 1 },
+  { codigo: "MED201", nombre: "Anatomía II", semestre: 2 },
+  { codigo: "MED301", nombre: "Fisiología I", semestre: 3 }
+];
+
+const contenedor = document.getElementById("contenedor-semestres");
+let estado = JSON.parse(localStorage.getItem("malla")) || {};
+
+/* ===== Crear materias dinámicamente ===== */
+materias.forEach(m => {
+  if (!estado[m.codigo]) estado[m.codigo] = { p1: 0, p2: 0, p3: 0, requisitos: [], aprobada: false };
+
+  const div = document.createElement("div");
+  div.className = "materia-columna bloqueada";
+  div.dataset.id = m.codigo;
+  div.dataset.semestre = m.semestre;
+  div.innerHTML = `
+    <h3>${m.nombre}</h3>
+    <small>${m.codigo}</small>
+    <div class="progresos">
+      <input class="p1" type="number" min="0" max="10" value="${estado[m.codigo].p1}">
+      <input class="p2" type="number" min="0" max="10" value="${estado[m.codigo].p2}">
+      <input class="p3" type="number" min="0" max="10" value="${estado[m.codigo].p3}">
+    </div>
+    <p>Nota final: <span>${calcularNota(estado[m.codigo].p1, estado[m.codigo].p2, estado[m.codigo].p3)}</span></p>
+    <p>Prerrequisitos:</p>
+    <select multiple class="requisitos"></select>
+  `;
+  contenedor.appendChild(div);
+});
+
+/* ===== Calcular nota ===== */
+function calcularNota(p1, p2, p3) {
+  return (p1*0.25 + p2*0.35 + p3*0.40).toFixed(2);
+}
+
+/* ===== Guardar y cargar ===== */
+function guardar() { localStorage.setItem("malla", JSON.stringify(estado)); }
+
+/* ===== Eventos inputs ===== */
+document.querySelectorAll(".materia-columna").forEach(div => {
+  const inputs = div.querySelectorAll("input");
+  inputs.forEach(input => {
+    input.addEventListener("input", () => {
+      const codigo = div.dataset.id;
+      estado[codigo].p1 = parseFloat(div.querySelector(".p1").value) || 0;
+      estado[codigo].p2 = parseFloat(div.querySelector(".p2").value) || 0;
+      estado[codigo].p3 = parseFloat(div.querySelector(".p3").value) || 0;
+      div.querySelector("span").textContent = calcularNota(estado[codigo].p1, estado[codigo].p2, estado[codigo].p3);
+      estado[codigo].aprobada = calcularNota(estado[codigo].p1, estado[codigo].p2, estado[codigo].p3) >= 7;
+      guardar();
+      verificarBloqueos();
+    });
+  });
+});
+
+/* ===== Bloqueo por prerrequisitos ===== */
+function verificarBloqueos() {
+  document.querySelectorAll(".materia-columna").forEach(div => {
+    const codigo = div.dataset.id;
+    const reqs = estado[codigo].requisitos;
+    const ok = reqs.every(r => estado[r]?.aprobada);
+    div.classList.toggle("bloqueada", !ok);
+  });
+}
+
+window.onload = verificarBloqueos;
+/* ===== EVENTOS ===== */
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".materia-columna input").forEach(i => {
+    i.addEventListener("input", () => {
+      calcularNota(i.closest(".materia-columna"));
+    });
+  });
+  cargarDatos();
+});
+
