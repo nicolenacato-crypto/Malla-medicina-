@@ -36,3 +36,50 @@
   <div class="materia bloqueada" 
      data-id="bioquimica"
      data-requisitos="quimica">
+<div class="malla">
+
+  <!-- MATERIA 1 -->
+  <div class="materia-columna"
+       data-id="quimica"
+       data-semestre="1"
+       data-requisitos="">
+       
+    <h3>Química General</h3>
+    <p class="semestre-label">Semestre 1</p>
+
+    <div class="progresos">
+      <input class="p1" type="number" placeholder="P1">
+      <input class="p2" type="number" placeholder="P2">
+      <input class="p3" type="number" placeholder="P3">
+    </div>
+
+    <p class="nota-final">Nota final: <span>0.00</span></p>
+  </div>
+
+  <!-- MATERIA 2 (con prerrequisito) -->
+  <div class="materia-columna bloqueada"
+       data-id="bioquimica"
+       data-semestre="2"
+       data-requisitos="quimica">
+
+    <h3>Bioquímica</h3>
+    <p class="semestre-label">Semestre 2</p>
+
+    <p class="requisitos">
+      Requisito: Química General
+    </p>
+
+    <div class="progresos">
+      <input class="p1" type="number" placeholder="P1">
+      <input class="p2" type="number" placeholder="P2">
+      <input class="p3" type="number" placeholder="P3">
+    </div>
+
+    <p class="nota-final">Nota final: <span>0.00</span></p>
+  </div>
+
+</div>
+<div class="semestre" data-semestre="1">
+  <h2>Semestre 1</h2>
+  ...
+</div>
