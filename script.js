@@ -189,3 +189,53 @@ document.querySelectorAll(".materia").forEach(materia => {
     input.addEventListener("input", () => calcularNota(materia));
   });
 });
+function actualizarBloqueos() {
+  document.querySelectorAll(".materia").forEach(materia => {
+    const requisitos = materia.dataset.requisitos;
+
+    if (!requisitos) {
+      materia.classList.remove("bloqueada");
+      return;
+    }
+
+    const lista = requisitos.split(",");
+    const aprobadas = lista.every(id => {
+      const req = document.querySelector(`.materia[data-id="${id}"]`);
+      return req && req.classList.contains("aprobada");
+    });
+
+    if (aprobadas) {
+      materia.classList.remove("bloqueada");
+    } else {
+      materia.classList.add("bloqueada");
+    }
+  });
+function guardarDatos() {
+  const datos = {};
+
+  document.querySelectorAll(".materia").forEach(materia => {
+    datos[materia.dataset.id] = {
+      p1: materia.querySelector(".p1").value,
+      p2: materia.querySelector(".p2").value,
+      p3: materia.querySelector(".p3").value
+    };
+  });
+
+  localStorage.setItem("mallaNotas", JSON.stringify(datos));
+}
+  function cargarDatos() {
+  const datos = JSON.parse(localStorage.getItem("mallaNotas")) || {};
+
+  document.querySelectorAll(".materia").forEach(materia => {
+    const d = datos[materia.dataset.id];
+    if (!d) return;
+
+    materia.querySelector(".p1").value = d.p1;
+    materia.querySelector(".p2").value = d.p2;
+    materia.querySelector(".p3").value = d.p3;
+
+    calcularNota(materia);
+  });
+}
+
+window.onload = cargarDatos;
